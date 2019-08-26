@@ -35,7 +35,7 @@ namespace ReactiveUI
 #if HAS_UNO
         partial
 #endif
-        class RoutedViewHost : TransitioningContentControl, IActivatable, IEnableLogger
+        class RoutedViewHost : ImprovedTransitioningContentControl, IActivatable, IEnableLogger
     {
         /// <summary>
         /// The router dependency property.
@@ -120,6 +120,8 @@ namespace ReactiveUI
                         }
 
                         view.ViewModel = x.Item1;
+
+                        // (view as ICanForceManualActivation)?.Activate(true);
                         Content = view;
                     }, ex => RxApp.DefaultExceptionHandler.OnNext(ex)));
             });

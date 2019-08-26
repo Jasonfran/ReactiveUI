@@ -19,6 +19,11 @@ namespace ReactiveUI.Uno
 namespace ReactiveUI
 #endif
 {
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
+
     /// <summary>
     /// A <see cref="UserControl"/> that is reactive.
     /// </summary>
@@ -90,9 +95,11 @@ namespace ReactiveUI
 #if HAS_UNO
         partial
 #endif
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         class ReactiveUserControl<TViewModel> :
-            UserControl, IViewFor<TViewModel>
-            where TViewModel : class
+#pragma warning restore CA1063 // Implement IDisposable Correctly
+            UserControl, IViewFor<TViewModel> // ICanActivate, ICanForceManualActivation, IDisposable
+        where TViewModel : class
     {
         /// <summary>
         /// The view model dependency property.
@@ -104,6 +111,8 @@ namespace ReactiveUI
                 typeof(ReactiveUserControl<TViewModel>),
                 new PropertyMetadata(null));
 
+        // private readonly Subject<Unit> _activated = new Subject<Unit>();
+        // private readonly Subject<Unit> _deactivated = new Subject<Unit>();
 #if HAS_UNO
         /// <summary>
         /// Initializes a new instance of the <see cref="ReactiveUserControl{TViewModel}"/> class.
@@ -158,11 +167,43 @@ namespace ReactiveUI
             set => SetValue(ViewModelProperty, value);
         }
 
+        ///// <inheritdoc/>
+        // public IObservable<Unit> Activated => _activated.AsObservable();
+
+        ///// <inheritdoc/>
+        // public IObservable<Unit> Deactivated => _deactivated.AsObservable();
+
         /// <inheritdoc/>
         object IViewFor.ViewModel
         {
             get => ViewModel;
             set => ViewModel = (TViewModel)value;
         }
+
+        ///// <inheritdoc/>
+        // public void Activate(bool activate)
+        // {
+        //    RxApp.MainThreadScheduler.Schedule(() => (activate ? _activated : _deactivated).OnNext(Unit.Default));
+        // }
+
+        ///// <inheritdoc/>
+        // public void Dispose()
+        // {
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        // }
+
+        ///// <summary>
+        ///// IDisposable.
+        ///// </summary>
+        ///// <param name="disposing">Disposing.</param>
+        // protected virtual void Dispose(bool disposing)
+        // {
+        //    if (disposing)
+        //    {
+        //        _activated?.Dispose();
+        //        _deactivated?.Dispose();
+        //    }
+        // }
     }
 }

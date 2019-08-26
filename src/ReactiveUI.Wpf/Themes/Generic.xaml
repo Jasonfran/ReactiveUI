@@ -143,7 +143,7 @@
                                         <TranslateTransform X="0" Y="0" />
                                     </TransformGroup.Children>
                                 </TransformGroup>
-<!--
+                                <!--
                                 <Controls:CompatCompositeTransform 
                                     ScaleX="1" ScaleY="1"
                                     TranslateX="0" TranslateY="0"/>
@@ -170,7 +170,7 @@
                                         <TranslateTransform X="0" Y="0" />
                                     </TransformGroup.Children>
                                 </TransformGroup>
-<!--
+                                <!--
                                 <Controls:CompatCompositeTransform 
                                     ScaleX="1" ScaleY="1"
                                     TranslateX="0" TranslateY="0"/>
@@ -183,6 +183,76 @@
                                 <PlaneProjection/>
                             </ContentPresenter.Projection>
                             -->
+                        </ContentPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Controls:ImprovedTransitioningContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Controls:ImprovedTransitioningContentControl">
+                    <Grid 
+                        x:Name="PART_Container"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="PresentationStates">
+
+                                <VisualState x:Name="Custom" />
+
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames 
+                                            BeginTime="00:00:00" 
+                                            Storyboard.TargetName="PART_PreviousContentPresentationSite" 
+                                            Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="00:00:00">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter 
+                            x:Name="PART_PreviousContentPresentationSite"
+                            Content="{x:Null}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            RenderTransformOrigin="0.5,0.5">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+
+                        <ContentPresenter
+                            x:Name="PART_CurrentContentPresentationSite"
+                            Content="{x:Null}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            RenderTransformOrigin="0.5,0.5">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
                         </ContentPresenter>
                     </Grid>
                 </ControlTemplate>
